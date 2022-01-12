@@ -14,6 +14,7 @@ else{
     header("Location:Task6.php");
 }
 
+$oldPic =$userData['image'];
 
 function RemoveSpaces($strToConvert)
 {
@@ -24,7 +25,7 @@ function RemoveSpaces($strToConvert)
 
 
 function UplaodPic()
-{   
+{   global oldPic;
     global $errors;
     if (!empty($_FILES['image']['name'])) {
         $ImageName = $_FILES['image']['name'];
@@ -36,6 +37,9 @@ function UplaodPic()
             $finalname = rand() . time() . '.' . $finalExt;
             $distnationFolder = './uploads/' . $finalname;
             if (move_uploaded_file($imageTemp, $distnationFolder)) {
+             $file = fopen($oldPic,'w');
+                fclose($file);
+                unlink($oldPic);    
                 return $distnationFolder;
             } else {
                 $errors['whileUpload'] = 'Upload faild please try again'; // pass Error
